@@ -12,4 +12,11 @@ public class Song {
     public string? Filepath { get; set; }
     public List<Set> Sets { get; set; } = [];
     public List<Project> Projects { get; set; } = [];
+
+    public enum Transposition {
+        Concert,
+        Bass,
+        Bb,
+        Eb
+    }
 }

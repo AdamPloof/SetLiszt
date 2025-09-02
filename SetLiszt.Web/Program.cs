@@ -1,8 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 
 using SetLiszt.Web.Data;
+using SetLiszt.Web.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<FileUploadOptions>(
+    builder.Configuration.GetSection("FileUploadOptions")
+);
 
 // Add database context
 builder.Services.AddDbContext<SetLisztDbContext>(opt => 

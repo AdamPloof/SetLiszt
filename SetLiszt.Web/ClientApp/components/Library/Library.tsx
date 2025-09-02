@@ -3,7 +3,11 @@ import React, { JSX, useState, useEffect } from 'react';
 import { Song } from '../../types/entities';
 import { SongListProps, SongViewerProps } from '../../types/componentProps';
 import { fetchData } from '../../includes/utils';
-import { URL_LIST_SONGS, URL_CHARTS_BASE } from '../../includes/paths';
+import {
+    URL_LIST_SONGS,
+    URL_CHARTS_BASE,
+    URL_UPLOAD_SONG
+} from '../../includes/paths';
 
 function songTransformer(data: any[]): Song[] {
     const songs: Song[] = data.map(d => {
@@ -22,7 +26,7 @@ function LibraryToolbar(): JSX.Element {
     return (
         <div className="library-toolbar border rounded w-100 p-2 d-flex flex-row justify-content-between">
             <div className="toolbar-left">
-                <button className="btn btn-sm btn-outline-primary">Upload</button>
+                <a href={URL_UPLOAD_SONG} className="btn btn-sm btn-outline-primary">Upload</a>
             </div>
             <div className="toolbar-right">
                 <button className="btn btn-sm btn-outline-secondary">Concert</button>

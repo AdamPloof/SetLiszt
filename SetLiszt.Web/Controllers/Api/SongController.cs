@@ -7,7 +7,7 @@ using SetLiszt.Web.Data;
 namespace SetLiszt.Web.Controllers;
 
 [ApiController]
-[Route("songs")]
+[Route("api/songs")]
 public class SongController : ControllerBase {
     private readonly SetLisztDbContext _dbContext;
 
@@ -15,7 +15,7 @@ public class SongController : ControllerBase {
         _dbContext = dbContext;
     }
 
-    [HttpGet]
+    [HttpGet("")]
     public async Task<ActionResult<List<Song>>> ListSongs() {
         return Ok(await _dbContext.Songs.ToListAsync());
     }
