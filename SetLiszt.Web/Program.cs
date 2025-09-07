@@ -5,6 +5,7 @@ using SetLiszt.Web.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// TODO: make sure song file directory is relative to content root
 builder.Services.Configure<FileUploadOptions>(
     builder.Configuration.GetSection("FileUploadOptions")
 );
