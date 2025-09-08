@@ -1,4 +1,7 @@
-﻿@{
+﻿@using SetLiszt.Web.Controllers
+@model HomeController.DirectoryViewModel;
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -13,4 +16,7 @@
     </p>
     <p>Culpa velit quisquam modi distinctio labore. Cupiditate, reprehenderit ab. Aliquam in cumque quae ex a pariatur dolorem natus officiis suscipit soluta. Reiciendis repudiandae iure, dolores voluptate beatae mollitia culpa hic repellat expedita rerum officia quidem, accusantium corporis, necessitatibus dolor quae earum deleniti aliquam dicta vero labore. Alias necessitatibus veniam praesentium harum fuga placeat molestiae, consectetur sequi accusantium libero ipsam vitae blanditiis impedit quae. Nesciunt, sint? Magnam esse, obcaecati sapiente ipsam delectus facere amet minus adipisci debitis.</p>
     <p>Odit vel sunt maxime vero ab facilis perferendis voluptatibus facere numquam, delectus beatae eveniet voluptas amet, aliquam quas voluptatum cumque molestias unde eligendi omnis. Nobis eligendi tenetur, dolorum fugit nihil illo reprehenderit ipsa!</p>
+    <br>
+    <p><strong>Content Root:</strong>@Model.ContentRoot</p>
+    <p><strong>Content Root:</strong>@Model.WebRoot</p>
 </div>
