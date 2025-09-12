@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SetLiszt.Web.Data;
@@ -11,9 +12,11 @@ using SetLiszt.Web.Data;
 namespace SetLiszt.Web.Migrations
 {
     [DbContext(typeof(SetLisztDbContext))]
-    partial class SetLisztDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250912035004_AddSongFileMetaData")]
+    partial class AddSongFileMetaData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

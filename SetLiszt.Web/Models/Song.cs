@@ -9,7 +9,11 @@ public class Song {
     [Required]
     public required string Title { get; set; }
     public string? Artist { get; set; }
+
+    [Required]
+    public required string OriginalFileName { get; set; }
     public string? Filepath { get; set; }
+    public Transposition InstrumentTransposition { get; set; }
     public List<Set> Sets { get; set; } = [];
     public List<Project> Projects { get; set; } = [];
 

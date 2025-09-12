@@ -5,7 +5,7 @@
 
 <div class="container">
     <h2>Upload Song</h2>
-    <form asp.action="Login" method="post">
+    <form asp.action="UploadToLibrary" method="post" enctype="multipart/form-data">
         <div class="form-content d-flex flex-column">
             <div class="mb-3">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>

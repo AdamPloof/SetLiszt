@@ -11,7 +11,11 @@ public static class DataSeeder {
         List<string> titles = ["Summertime", "Yesterdays", "Blue Monk"];
         foreach (string title in titles) {
             await context.Songs.AddAsync(new Song() {
-                Title = title
+                Title = title,
+                Artist = "",
+                OriginalFileName = "",
+                Filepath = "",
+                InstrumentTransposition = Song.Transposition.Concert
             });
         }
 

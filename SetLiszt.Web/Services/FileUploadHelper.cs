@@ -1,7 +1,8 @@
+using System.IO;
+using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
-using System.IO;
 
 using SetLiszt.Web.Configuration;
 using SetLiszt.Web.Exceptions;
@@ -29,6 +30,14 @@ public class FileUploadHelper {
         _errors = [];
     }
 
+    /// <summary>
+    /// Return the HTML encoded original filename
+    /// </summary>
+    /// <returns></returns>
+    public static string GetOriginalFileName(IFormFile file) {
+        return WebUtility.HtmlEncode(file.FileName);
+    }
+
     public async Task<string> UploadToLocalStorage(IFormFile file, CancellationToken cancellation) {
         _errors.Clear();
         await ValidateFile(file, cancellation);
@@ -36,7 +45,7 @@ public class FileUploadHelper {
             throw new InvalidUploadException(string.Join(", ", _errors));
         }
 
-        string serverName = GenerateServerName();
+        string serverName = GenerateServerName(Path.GetExtension(file.FileName));
         string fullPath = Path.Combine(_storageRoot, serverName);
         await using (var fs = File.Create(fullPath)) {
             file.CopyTo(fs);
@@ -45,11 +54,11 @@ public class FileUploadHelper {
         return serverName;
     }
 
-    private static string GenerateServerName() {
+    private static string GenerateServerName(string ext) {
         string rName = Path.GetRandomFileName();
         string now = DateTime.Now.ToString("yyyyMMddHmmssff");
 
-        return $"{rName}_{now}";
+        return $"{rName}_{now}{ext}";
     }
 
     private async Task ValidateFile(IFormFile file, CancellationToken cancellation) {

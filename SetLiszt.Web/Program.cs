@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 using SetLiszt.Web.Data;
 using SetLiszt.Web.Configuration;
+using SetLiszt.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,15 +18,17 @@ builder.Services.AddDbContext<SetLisztDbContext>(opt =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<PathConfigurationDelegate>();
+builder.Services.AddScoped<FileUploadHelper>();
 
 // Configure options
+// TODO: configure validation via annotations
 builder.Services
     .AddOptions<FileUploadOptions>().Configure<PathConfigurationDelegate>(
         (opts, pathConfig) => {
             opts.RootDirectory = pathConfig.ConvertConfig(opts.RootDirectory);
         }
     )
-    .Validate(o => !string.IsNullOrWhiteSpace(o.RootDirectory), "Root directory must be set")
+    .Validate(opts => !string.IsNullOrWhiteSpace(opts.RootDirectory), "Root directory must be set")
     .ValidateOnStart();
 
 var app = builder.Build();
