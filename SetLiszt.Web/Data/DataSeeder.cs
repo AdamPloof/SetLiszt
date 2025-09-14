@@ -8,14 +8,16 @@ public static class DataSeeder {
             return;
         }
 
-        List<string> titles = ["Summertime", "Yesterdays", "Blue Monk"];
-        foreach (string title in titles) {
+        Dictionary<string, string> tunes = new Dictionary<string, string>() {
+            {"Summertime", "Gershwin"},
+            {"Yesterdays", "Kern"},
+            {"Blue Monk", "Monk"},
+        };
+
+        foreach (KeyValuePair<string, string> tune in tunes) {
             await context.Songs.AddAsync(new Song() {
-                Title = title,
-                Artist = "",
-                OriginalFileName = "",
-                Filepath = "",
-                InstrumentTransposition = Song.Transposition.Concert
+                Title = tune.Key,
+                Artist = tune.Value,
             });
         }
 

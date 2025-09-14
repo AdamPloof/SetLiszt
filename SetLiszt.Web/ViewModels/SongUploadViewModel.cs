@@ -16,5 +16,5 @@ public class SongUploadViewModel {
     public IFormFile? File { get; set; }
 
     public string? Artist { get; set; }
-    public Song.Transposition Transposition { get; set; } = Song.Transposition.Concert;
+    public SongFile.Transposition Transposition { get; set; } = SongFile.Transposition.Concert;
 }

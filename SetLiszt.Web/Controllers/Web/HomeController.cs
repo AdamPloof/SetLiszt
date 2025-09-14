@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-using SetLiszt.Web.Models;
+using SetLiszt.Web.ViewModels;
 using SetLiszt.Web.Configuration;
 
 namespace SetLiszt.Web.Controllers;

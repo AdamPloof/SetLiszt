@@ -24,18 +24,17 @@ function songTransformer(data: any[]): Song[] {
 
 function LibraryToolbar(): JSX.Element {
     return (
-        <div className="library-toolbar border rounded w-100 p-2 d-flex flex-row justify-content-between">
+        <div className="library-toolbar border rounded w-100 p-2 d-flex flex-row justify-content-between align-items-center">
             <div className="toolbar-left">
                 <a href={URL_UPLOAD_SONG} className="btn btn-sm btn-outline-primary">Upload</a>
             </div>
             <div className="toolbar-right">
-                <button className="btn btn-sm btn-outline-secondary">Concert</button>
-                &nbsp;
-                <button className="btn btn-sm btn-outline-secondary">Bass</button>
-                &nbsp;
-                <button className="btn btn-sm btn-outline-secondary">Bb</button>
-                &nbsp;
-                <button className="btn btn-sm btn-outline-secondary">Eb</button>
+                <select className="form-select" name="transpositionSelect" id="transpositionSelect">
+                    <option value="0">Concert</option>
+                    <option value="1">Bass</option>
+                    <option value="2">Bb</option>
+                    <option value="3">Eb</option>
+                </select>
             </div>
         </div>
     );

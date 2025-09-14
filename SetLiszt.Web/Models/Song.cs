@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace SetLiszt.Web.Models;
 
@@ -10,17 +11,8 @@ public class Song {
     public required string Title { get; set; }
     public string? Artist { get; set; }
 
-    [Required]
-    public required string OriginalFileName { get; set; }
-    public string? Filepath { get; set; }
-    public Transposition InstrumentTransposition { get; set; }
+    public ICollection<SongFile> SongFiles { get; } = new List<SongFile>();
+
     public List<Set> Sets { get; set; } = [];
     public List<Project> Projects { get; set; } = [];
-
-    public enum Transposition {
-        Concert,
-        Bass,
-        Bb,
-        Eb
-    }
 }

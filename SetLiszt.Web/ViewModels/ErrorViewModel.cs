@@ -1,4 +1,4 @@
-namespace SetLiszt.Web.Models;
+namespace SetLiszt.Web.ViewModels;
 
 public class ErrorViewModel
 {

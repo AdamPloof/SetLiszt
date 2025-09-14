@@ -35,13 +35,17 @@ public class LibraryController : Controller {
         }
 
         string filepath = await _uploadHelper.UploadToLocalStorage(model.File, cancellation);
+        SongFile songFile = new SongFile() {
+            Filepath = filepath,
+            OriginalFileName = FileUploadHelper.GetOriginalFileName(model.File),
+            InstrumentTransposition = model.Transposition,
+        };
         Song song = new() {
             Title = model.Title!,
             Artist = model.Artist,
-            InstrumentTransposition = model.Transposition,
-            OriginalFileName = FileUploadHelper.GetOriginalFileName(model.File),
-            Filepath = filepath
         };
+        song.SongFiles.Add(songFile);
+
         _dbContext.Add(song);
         await _dbContext.SaveChangesAsync();
 

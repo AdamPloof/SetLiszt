@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <select
                         asp-for="Transposition"
-                        asp-items="Html.GetEnumSelectList<Song.Transposition>()"
+                        asp-items="Html.GetEnumSelectList<SongFile.Transposition>()"
                         class="form-select"
                     ></select>
                     <span asp-validation-for="Transposition" class="text-danger"></span>
