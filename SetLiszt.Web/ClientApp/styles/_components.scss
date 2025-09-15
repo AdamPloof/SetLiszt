@@ -1,6 +1,14 @@
 @import "custom";
 @import "variables";
 
+.component-container {
+    position: relative;
+}
+
+.library-wrapper {
+    column-gap: 1.75rem;
+}
+
 .song-list-container {
     border: 1px solid $border-color;
     border-radius: $border-radius;
@@ -28,11 +36,25 @@
 }
 
 .song-viewer {
+    max-height: $library-widget-max-height;
+}
+
+.song-viewer-container {
+    row-gap: 1rem;
     padding: 1rem 2rem;
     border: 1px solid $border-color;
     border-radius: $border-radius;
 }
 
-.song-viewer-container {
-    row-gap: 1rem;
+.toolbar-button-round {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2rem;
+    border: 1px solid $border-color;
+    padding: .5rem;
+
+    &:hover {
+        background-color: $sl-brown-lightest;
+    }
 }

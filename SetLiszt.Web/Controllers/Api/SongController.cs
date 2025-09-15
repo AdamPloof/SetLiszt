@@ -17,6 +17,10 @@ public class SongController : ControllerBase {
 
     [HttpGet("")]
     public async Task<ActionResult<List<Song>>> ListSongs() {
-        return Ok(await _dbContext.Songs.ToListAsync());
+        return Ok(
+            await _dbContext.Songs
+                .Include(s => s.SongFiles)
+                .ToListAsync()
+        );
     }
 }

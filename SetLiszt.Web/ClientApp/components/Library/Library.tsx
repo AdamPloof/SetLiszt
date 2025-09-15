@@ -1,13 +1,28 @@
 import React, { JSX, useState, useEffect } from 'react';
 
-import { Song } from '../../types/entities';
+import { Song, SongFile } from '../../types/entities';
 import { SongListProps, SongViewerProps } from '../../types/componentProps';
 import { fetchData } from '../../includes/utils';
 import {
+    URL_IMAGE_ROOT,
     URL_LIST_SONGS,
     URL_CHARTS_BASE,
     URL_UPLOAD_SONG
 } from '../../includes/paths';
+
+function songFileTransformer(data: any[]): SongFile[] {
+    const songFiles: SongFile[] = data.map(d => {
+        return {
+            id: d.id,
+            songId: d.songId,
+            filepath: d.filepath,
+            originalFilename: d.originalFileName,
+            transposition: d.instrumentTransposition
+        };
+    });
+
+    return songFiles;
+}
 
 function songTransformer(data: any[]): Song[] {
     const songs: Song[] = data.map(d => {
@@ -15,7 +30,7 @@ function songTransformer(data: any[]): Song[] {
             id: Number(d.id),
             title: String(d.title),
             artist: d.artist ?? null,
-            filepath: d.filePath ?? null,
+            songFiles: songFileTransformer(d.songFiles)
         };
     });
 
@@ -24,12 +39,27 @@ function songTransformer(data: any[]): Song[] {
 
 function LibraryToolbar(): JSX.Element {
     return (
-        <div className="library-toolbar border rounded w-100 p-2 d-flex flex-row justify-content-between align-items-center">
-            <div className="toolbar-left">
-                <a href={URL_UPLOAD_SONG} className="btn btn-sm btn-outline-primary">Upload</a>
+        <div className="library-toolbar w-100 d-flex flex-row justify-content-between align-items-center">
+            <div className="toolbar-left text-small">
+                <div className="antic-didone-regular">
+                    <h4 className="m-0">Secret of the Forest</h4>
+                    <span className="text-muted">Chrono Trigger</span>
+                </div>
             </div>
-            <div className="toolbar-right">
-                <select className="form-select" name="transpositionSelect" id="transpositionSelect">
+            <div className="toolbar-right d-flex flex-row">
+                {/* <a href="#" className="toolbar-button-round me-2">
+                    <img src={`${URL_IMAGE_ROOT}/icons/more_light.svg`} alt="more icon" width="24px" className="me-0" />
+                </a> */}
+                <a href="#" className="toolbar-button-round me-2">
+                    <img src={`${URL_IMAGE_ROOT}/icons/fullscreen_light.svg`} alt="fullscreen icon" width="24px" className="me-0" />
+                </a>
+                <a href="#" className="toolbar-button-round me-2">
+                    <img src={`${URL_IMAGE_ROOT}/icons/edit_light.svg`} alt="edit song icon" width="24px" className="me-0" />
+                </a>
+                <a href={URL_UPLOAD_SONG} className="toolbar-button-round me-2">
+                    <img src={`${URL_IMAGE_ROOT}/icons/add_light.svg`} alt="upload song icon" width="24px" className="me-0" />
+                </a>
+                <select className="form-select text-small" name="transpositionSelect" id="transpositionSelect">
                     <option value="0">Concert</option>
                     <option value="1">Bass</option>
                     <option value="2">Bb</option>
@@ -131,7 +161,7 @@ export default function Library(): JSX.Element {
     return (
         <div className="library-wrapper w-100 d-flex flex-row justify-content-between container">
             <div className="song-list-container w-25">
-                {<SongListFilter />}
+                <SongListFilter />
                 {loading ? <Loader /> : <SongList songs={songs} />}
             </div>
             <div className="song-viewer-container w-75 d-flex flex-column">

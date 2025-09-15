@@ -11,17 +11,12 @@
     font-family: "Antic Didone", serif;
 }
 
-.navbar-brand.setliszt-brand {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: fit-content;
-    // padding-left: calc($nav-link-padding-x + 0.75rem);
-    // padding-right: 1rem;
+
+.nav-utils {
+    display: none;
 
     @include media-breakpoint-up(sm) {
-        top: unset;
-        left: 0;
+        display: block;
     }
 }
 
