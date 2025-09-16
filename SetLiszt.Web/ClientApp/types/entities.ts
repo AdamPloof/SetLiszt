@@ -10,5 +10,5 @@ export interface SongFile {
     songId: number,
     originalFilename: string,
     filepath: string,
-    transposition: number
+    transposition: string
 }

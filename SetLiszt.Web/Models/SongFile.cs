@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SetLiszt.Web.Models;
 
@@ -17,6 +18,7 @@ public class SongFile {
 
     public Transposition InstrumentTransposition { get; set; }
 
+    [JsonConverter(typeof(JsonStringEnumConverter<Transposition>))]
     public enum Transposition {
         Concert,
         Bass,

@@ -11,9 +11,11 @@ public class SetLisztDbContext : DbContext {
         DbContextOptions<SetLisztDbContext> options
     ) : base(options) {}
 
-    public DbSet<Song> Songs { get; set; } = null!;
-    public DbSet<Set> Sets { get; set; } = null!;
-    public DbSet<Gig> Gigs { get; set; } = null!;
+    public DbSet<Song>     Songs { get; set; } = null!;
+    public DbSet<SongFile> SongFiles { get; set; } = null!;
+    public DbSet<Project>  Projects { get; set; } = null!;
+    public DbSet<Set>      Sets { get; set; } = null!;
+    public DbSet<Gig>      Gigs { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder) {
         base.OnModelCreating(builder);

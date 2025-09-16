@@ -81,31 +81,47 @@ function SongListFilter(): JSX.Element {
                     placeholder="Search..."
                     style={{zIndex: 1, position: 'relative'}}
                 />
-                <label htmlFor="song-search-control">Search</label>
+                <label htmlFor="song-search-control">
+                    <img src={`${URL_IMAGE_ROOT}/icons/search_light.svg`} width="24px" className="me-3" />
+                    Search
+                </label>
             </div>
         </div>
     );
 }
 
-function SongList({ songs }: SongListProps): JSX.Element {
+function SongList({ songs, selectedSong, setSelectedSong }: SongListProps): JSX.Element {
+    const baseClassName = "list-group-item list-group-item-action d-flex flex-column justify-content-between";
+    
     return (
-        <ul className="list-group song-list-group list-group-flush">
+        <div className="list-group song-list-group list-group-flush">
             {songs.map(s => {
+                const transpositions = s.songFiles.map(sf => sf.transposition).join(', ');
+                let className = baseClassName;
+                if (selectedSong && selectedSong.id === s.id) {
+                    className += " active";
+                }
+                
                 return (
-                    <li className="list-group-item d-flex flex-column justify-content-between" key={s.id}>
-                        <div className="flex-row d-flex justify-content-start">
+                    <a
+                        href="#"
+                        className={className}
+                        key={s.id}
+                        onClick={(e) => { e.preventDefault(); setSelectedSong(s); }}
+                    >
+                        <div className="flex-row d-flex justify-content-between">
                             <div className="song-title"><strong>{s.title}</strong></div>
-                            <div className="col instruments-markers d-flex justify-content-end">
-                                <small>C, Bb, Eb</small>
+                            <div className="col instruments-markers d-flex justify-content-end text-end">
+                                <small>{transpositions}</small>
                             </div>
                         </div>
                         <div className="flex-row justify-content-start">
                             <div className="song-artist text-muted">{s.artist}</div>
                         </div>
-                    </li>
+                    </a>
                 );
             })}            
-        </ul>
+        </div>
     );
 }
 
@@ -162,7 +178,11 @@ export default function Library(): JSX.Element {
         <div className="library-wrapper w-100 d-flex flex-row justify-content-between container">
             <div className="song-list-container w-25">
                 <SongListFilter />
-                {loading ? <Loader /> : <SongList songs={songs} />}
+                {loading ? <Loader /> : <SongList
+                    songs={songs}
+                    selectedSong={selectedSong}
+                    setSelectedSong={setSelectedSong}
+                />}
             </div>
             <div className="song-viewer-container w-75 d-flex flex-column">
                 <LibraryToolbar />
