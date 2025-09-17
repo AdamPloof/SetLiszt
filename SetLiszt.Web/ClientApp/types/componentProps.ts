@@ -1,12 +1,18 @@
 import React from "react";
-import { Song } from "./entities"
+import { Song, SongFile } from "./entities"
 
 export interface SongListProps {
     songs: Song[];
     selectedSong: Song | null;
-    setSelectedSong: React.Dispatch<React.SetStateAction<Song | null>>
+    handleSelectSong: (song: Song) => void;
 }
 
 export interface SongViewerProps {
     song: Song | null;
+    songFile: SongFile | null;
+}
+
+export interface LibraryToolbarProps {
+    song: Song | null;
+    handleChangeTransposition: (transposition: string) => void;
 }

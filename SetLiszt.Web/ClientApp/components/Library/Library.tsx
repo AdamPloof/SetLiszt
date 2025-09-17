@@ -1,7 +1,11 @@
 import React, { JSX, useState, useEffect } from 'react';
 
 import { Song, SongFile } from '../../types/entities';
-import { SongListProps, SongViewerProps } from '../../types/componentProps';
+import {
+    SongListProps,
+    SongViewerProps,
+    LibraryToolbarProps
+} from '../../types/componentProps';
 import { fetchData } from '../../includes/utils';
 import {
     URL_IMAGE_ROOT,
@@ -37,13 +41,20 @@ function songTransformer(data: any[]): Song[] {
     return songs;
 }
 
-function LibraryToolbar(): JSX.Element {
+function LibraryToolbar({ song, handleChangeTransposition }: LibraryToolbarProps): JSX.Element | null {
+    if (!song) {
+        return null;
+    }
+
+    // TODO: disable unavailable transpositions
+    // const availableTranspositions = song.songFiles.map(sf => sf.transposition);
+
     return (
         <div className="library-toolbar w-100 d-flex flex-row justify-content-between align-items-center">
             <div className="toolbar-left text-small">
                 <div className="antic-didone-regular">
-                    <h4 className="m-0">Secret of the Forest</h4>
-                    <span className="text-muted">Chrono Trigger</span>
+                    <h4 className="m-0">{song.title}</h4>
+                    <span className="text-muted">{song.artist}</span>
                 </div>
             </div>
             <div className="toolbar-right d-flex flex-row">
@@ -90,7 +101,7 @@ function SongListFilter(): JSX.Element {
     );
 }
 
-function SongList({ songs, selectedSong, setSelectedSong }: SongListProps): JSX.Element {
+function SongList({ songs, selectedSong, handleSelectSong }: SongListProps): JSX.Element {
     const baseClassName = "list-group-item list-group-item-action d-flex flex-column justify-content-between";
     
     return (
@@ -107,7 +118,7 @@ function SongList({ songs, selectedSong, setSelectedSong }: SongListProps): JSX.
                         href="#"
                         className={className}
                         key={s.id}
-                        onClick={(e) => { e.preventDefault(); setSelectedSong(s); }}
+                        onClick={(e) => { e.preventDefault(); handleSelectSong(s); }}
                     >
                         <div className="flex-row d-flex justify-content-between">
                             <div className="song-title"><strong>{s.title}</strong></div>
@@ -125,20 +136,27 @@ function SongList({ songs, selectedSong, setSelectedSong }: SongListProps): JSX.
     );
 }
 
-function SongViewer({ song }: SongViewerProps): JSX.Element | null {
-    // if (!song) {
-    //     return null;
-    // }
+// TODO: let the user know when a song has available transpositions other than their preferred
+// one if there is no songFile.
+function SongViewer({ song, songFile }: SongViewerProps): JSX.Element | null {
+    if (!song || !songFile) {
+        return (
+            <div className="song-viewer d-flex justify-content-center align-items-center p-5">
+                <img src={`${URL_IMAGE_ROOT}/icons/music_note_light.svg`} alt="music note icon" width="24px" className="me-0" />
+                <p className="text-muted mb-0 antic-didone-regular">Select song...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="song-viewer">
             <object
-                data={URL_CHARTS_BASE + 'C - Secret of the Forest.pdf'}
+                data={URL_CHARTS_BASE + songFile.filepath}
                 type="application/pdf"
                 width={'100%'}
                 height={'800px'}
             >
-                <p><a href="#">Secret of the Forest</a></p>
+                <p><a href="#">{song.title}</a></p>
             </object>
         </div>
     );
@@ -153,12 +171,39 @@ function Loader(): JSX.Element {
 export default function Library(): JSX.Element {
     const [songs, setSongs] = useState<Song[]>([]);
     const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+    const [selectedSongFile, setSelectedSongFile] = useState<SongFile | null>(null);
+
+    // TODO: define enum for transpositions
+    const [selectedTransposition, setSelectedTransposition] = useState<string>("Concert");
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         fetchSongs();
     }, []);
+
+    /**
+     * handleSelectSong takes care of updating the selected song as well as
+     * choosing the appropriate song file based on the user's preferred transposition.
+     * 
+     * If a song file in user's preferred transposition is not available, then we'll
+     * notify the user that there are other transpositions available (if there are any)
+     * or otherwise let them know that there is no song file available for the song.
+     * 
+     * @param {Song} song 
+     */
+    const handleSelectSong = (song: Song): void => {
+        setSelectedSong(song);
+
+        const songFile: SongFile | undefined = song.songFiles.find(f => f.transposition === selectedTransposition);
+        if (songFile) {
+            setSelectedSongFile(songFile);
+        }
+    };
+
+    const handleChangeTransposition = (transposition: string): void => {
+
+    };
 
     const fetchSongs = async () => {
         setLoading(true);
@@ -181,12 +226,12 @@ export default function Library(): JSX.Element {
                 {loading ? <Loader /> : <SongList
                     songs={songs}
                     selectedSong={selectedSong}
-                    setSelectedSong={setSelectedSong}
+                    handleSelectSong={handleSelectSong}
                 />}
             </div>
             <div className="song-viewer-container w-75 d-flex flex-column">
-                <LibraryToolbar />
-                {<SongViewer song={selectedSong} />}
+                {selectedSong ? <LibraryToolbar song={selectedSong} handleChangeTransposition={handleChangeTransposition} /> : null}
+                <SongViewer song={selectedSong} songFile={selectedSongFile} />
             </div>
         </div>
     );
