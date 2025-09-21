@@ -10,9 +10,10 @@ import { fetchData } from '../../includes/utils';
 import {
     URL_IMAGE_ROOT,
     URL_LIST_SONGS,
-    URL_CHARTS_BASE,
+    URL_GET_SONG_FILE,
     URL_UPLOAD_SONG
 } from '../../includes/paths';
+import { transpositions } from '../../includes/consts';
 
 function songFileTransformer(data: any[]): SongFile[] {
     const songFiles: SongFile[] = data.map(d => {
@@ -46,8 +47,7 @@ function LibraryToolbar({ song, handleChangeTransposition }: LibraryToolbarProps
         return null;
     }
 
-    // TODO: disable unavailable transpositions
-    // const availableTranspositions = song.songFiles.map(sf => sf.transposition);
+    const availableTrans = song.songFiles.map(sf => sf.transposition);
 
     return (
         <div className="library-toolbar w-100 d-flex flex-row justify-content-between align-items-center">
@@ -70,11 +70,32 @@ function LibraryToolbar({ song, handleChangeTransposition }: LibraryToolbarProps
                 <a href={URL_UPLOAD_SONG} className="toolbar-button-round me-2">
                     <img src={`${URL_IMAGE_ROOT}/icons/add_light.svg`} alt="upload song icon" width="24px" className="me-0" />
                 </a>
-                <select className="form-select text-small" name="transpositionSelect" id="transpositionSelect">
-                    <option value="0">Concert</option>
-                    <option value="1">Bass</option>
-                    <option value="2">Bb</option>
-                    <option value="3">Eb</option>
+                <select
+                    className="form-select text-small"
+                    name="transpositionSelect"
+                    id="transpositionSelect"
+                    onChange={(e) => {
+                        handleChangeTransposition(e.target.value);
+                    }}
+                >
+                    {Object.keys(transpositions).map(t => {
+                        if (availableTrans.includes(t)) {
+                            return (
+                                <option
+                                    key={`trs-${t}`}
+                                    value={t}
+                                >{t}</option>
+                            );
+                        }
+
+                        return (
+                            <option
+                                key={`trs-${t}`}
+                                value={t}
+                                disabled
+                            >{t}</option>
+                        );
+                    })}
                 </select>
             </div>
         </div>
@@ -151,7 +172,7 @@ function SongViewer({ song, songFile }: SongViewerProps): JSX.Element | null {
     return (
         <div className="song-viewer">
             <object
-                data={URL_CHARTS_BASE + songFile.filepath}
+                data={`${URL_GET_SONG_FILE}/${song.id}/${songFile.transposition}`}
                 type="application/pdf"
                 width={'100%'}
                 height={'800px'}

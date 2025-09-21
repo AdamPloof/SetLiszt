@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
 
 using SetLiszt.Web.Data;
 using SetLiszt.Web.Configuration;
@@ -18,7 +19,9 @@ builder.Services.AddDbContext<SetLisztDbContext>(opt =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<PathConfigurationDelegate>();
+builder.Services.AddSingleton<IContentTypeProvider, FileExtensionContentTypeProvider>();
 builder.Services.AddScoped<FileUploadHelper>();
+builder.Services.AddScoped<FileDownloadHelper>();
 
 // Configure options
 // TODO: configure validation via annotations
