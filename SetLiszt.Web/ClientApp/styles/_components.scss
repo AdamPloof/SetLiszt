@@ -1,5 +1,6 @@
 @import "custom";
 @import "variables";
+@import "fonts";
 
 .component-container {
     position: relative;
@@ -9,10 +10,28 @@
     column-gap: 1.75rem;
 }
 
+.library-component-header {
+    @include theme-headings();
+    padding: .5rem 1rem;
+    color: $sl-grey-lighterer;
+    background-color: $sl-brown-darker;
+}
+
 .song-list-container {
     border: 1px solid $border-color;
     border-radius: $border-radius;
     height: fit-content;
+}
+
+.project-list-group {
+    font-size: 90%;
+    max-height: $library-widget-max-height;
+    overflow: auto;
+    border: 1px solid $border-color;
+
+    &.list-group-flush {
+        border-radius: $border-radius;
+    }
 }
 
 .song-list-group,

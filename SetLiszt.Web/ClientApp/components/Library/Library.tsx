@@ -6,7 +6,7 @@ import {
     SongViewerProps,
     LibraryToolbarProps
 } from '../../types/componentProps';
-import { fetchData } from '../../includes/utils';
+import { fetchData, uniqueKey } from '../../includes/utils';
 import {
     URL_IMAGE_ROOT,
     URL_LIST_SONGS,
@@ -157,6 +157,70 @@ function SongList({ songs, selectedSong, handleSelectSong }: SongListProps): JSX
     );
 }
 
+function ProjectList(): JSX.Element | null {
+    const baseClassName = "list-group-item list-group-item-action d-flex flex-column justify-content-between";
+    const projects: Array<string> = ['Dusk Quartet', 'Cabinet of Dr. Caligary', 'Halloween Wedding'];
+    
+    return (
+        <div className="list-group list-group-flush project-list-group">
+            <div className="library-component-header d-flex align-items-center border-bottom">
+                <h5 className='mb-0'>Projects</h5>
+            </div>
+            {projects.map(p => {
+                let className = baseClassName;
+                if (false) {
+                    className += " active";
+                }
+                
+                return (
+                    <a
+                        href="#"
+                        className={className}
+                        key={uniqueKey()}
+                        // onClick={(e) => { e.preventDefault(); handleSelectSong(s); }}
+                    >
+                        <div className="flex-row d-flex justify-content-between">
+                            <div className="song-title">{p}</div>
+                        </div>
+                    </a>
+                );
+            })}            
+        </div>
+    );
+}
+
+function SetList(): JSX.Element | null {
+    const baseClassName = "list-group-item list-group-item-action d-flex flex-column justify-content-between";
+    const sets: Array<string> = ['Aug 20th', 'Halloween', 'Fifth Friday'];
+    
+    return (
+        <div className="list-group list-group-flush project-list-group">
+            <div className="library-component-header d-flex align-items-center border-bottom">
+                <h5 className='mb-0'>Sets</h5>
+            </div>
+            {sets.map(s => {
+                let className = baseClassName;
+                if (false) {
+                    className += " active";
+                }
+                
+                return (
+                    <a
+                        href="#"
+                        className={className}
+                        key={uniqueKey()}
+                        // onClick={(e) => { e.preventDefault(); handleSelectSong(s); }}
+                    >
+                        <div className="flex-row d-flex justify-content-between">
+                            <div className="song-title">{s}</div>
+                        </div>
+                    </a>
+                );
+            })}            
+        </div>
+    );
+}
+
 // TODO: let the user know when a song has available transpositions other than their preferred
 // one if there is no songFile.
 function SongViewer({ song, songFile }: SongViewerProps): JSX.Element | null {
@@ -241,14 +305,23 @@ export default function Library(): JSX.Element {
     };
 
     return (
-        <div className="library-wrapper w-100 d-flex flex-row justify-content-between container">
+        <div className="library-wrapper w-100 d-flex flex-row justify-content-between">
             <div className="song-list-container w-25">
+                <div className="library-component-header d-flex align-items-center border-bottom">
+                    <h5 className='mb-0'>Library</h5>
+                </div>
                 <SongListFilter />
                 {loading ? <Loader /> : <SongList
                     songs={songs}
                     selectedSong={selectedSong}
                     handleSelectSong={handleSelectSong}
                 />}
+            </div>
+            <div className="project-list-container">
+                <ProjectList />
+            </div>
+            <div className="project-list-container">
+                <SetList />
             </div>
             <div className="song-viewer-container w-75 d-flex flex-column">
                 {selectedSong ? <LibraryToolbar song={selectedSong} handleChangeTransposition={handleChangeTransposition} /> : null}
